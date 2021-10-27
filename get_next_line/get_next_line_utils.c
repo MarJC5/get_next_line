@@ -6,16 +6,12 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/26 18:02:28 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 10:47:18 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
-* Others functions
-* ft_strjoin
-*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -24,6 +20,20 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strchr(const char *str, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ft_strlen(str) + 1)
+	{
+		if (str[i] == (char)c)
+			return ((char *)str + i);
+		i++;
+	}
+	return (NULL);
 }
 
 char	*ft_substr(const char *str, unsigned int start, size_t len)
