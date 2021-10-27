@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/27 14:16:34 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 17:37:14 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_read_line(int fd, char *save, char *buf)
 	c = 0;
 	nl = NULL;
 	if (!save)
-			save = ft_strdup("");
+		save = ft_strdup("");
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
@@ -30,15 +30,19 @@ char	*ft_read_line(int fd, char *save, char *buf)
 			return (NULL);
 		buf[file] = '\0';
 		result = ft_strjoin(save, buf);
+		printf("\n===== SAVE INSIDE =====\n%s\n", save);
+		printf("\n===== STRJOIN =====\n%s\n", result);
 		free(save);
 		save = result;
+		//printf("\n===== LOOP NEW LINE =====\n%s\n", *save);
 		nl = ft_strchr(buf, '\n');
 	}
-	result = buf;
 	while (result[c] != '\n')
 		c++;
 	result[c] = '\0';
-	save = ft_substr(save, c, ft_strlen(save) - c);
+	save = ft_substr(save, c + 1, BUFFER_SIZE - c);
+	printf("\n===== SAVE OUTSIDE =====\n%s\n", save);
+	printf("\n===== RESULT =====\n");
 	return (result);
 }
 
