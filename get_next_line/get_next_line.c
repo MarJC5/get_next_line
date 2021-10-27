@@ -6,37 +6,45 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/27 12:29:20 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 14:16:34 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_read_line(int fd, char *temp, char *buf)
+char	*ft_read_line(int fd, char *save, char *buf)
 {
 	char	*result;
-	char	*new_line;
-	int		index;
+	char	*nl;
+	int		file;
 	int		c;
 
-	new_line = NULL;
-	while (!new_line)
+	c = 0;
+	nl = NULL;
+	if (!save)
+			save = ft_strdup("");
+	while (!nl)
 	{
-		index = read(fd, buf, BUFFER_SIZE);
-		if (index == -1)
+		file = read(fd, buf, BUFFER_SIZE);
+		if (file == -1)
 			return (NULL);
-		new_line = ft_strchr(buf, '\n');
+		buf[file] = '\0';
+		result = ft_strjoin(save, buf);
+		free(save);
+		save = result;
+		nl = ft_strchr(buf, '\n');
 	}
 	result = buf;
 	while (result[c] != '\n')
 		c++;
 	result[c] = '\0';
+	save = ft_substr(save, c, ft_strlen(save) - c);
 	return (result);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*temp;
+	static char		*save;
 	char			*buf;
 	char			*ret;
 
@@ -44,7 +52,7 @@ char	*get_next_line(int fd)
 		buf = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
 	if (!buf)
 		return (NULL);
-	ret = ft_read_line(fd, temp, buf);
+	ret = ft_read_line(fd, save, buf);
 	free(buf);
 	return (ret);
 }

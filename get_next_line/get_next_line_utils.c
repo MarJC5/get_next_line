@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/27 10:47:18 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 13:38:48 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 	return (s);
 }
 
+
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	char		*sdst;
@@ -69,6 +70,17 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	while (++i < n)
 		sdst[i] = ssrc[i];
 	return (dst);
+}
+
+char	*ft_strdup(const char *str)
+{
+	char	*copy;
+
+	copy = malloc((ft_strlen(str) + 1) * sizeof(char));
+	if (!copy)
+		return (NULL);
+	ft_memcpy(copy, str, ft_strlen(str) + 1);
+	return (copy);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
