@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/25 17:24:21 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 07:48:28 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,44 @@
 
 char	*get_next_line(int fd)
 {
-	int			ret;
-	static char	*buf;
+	static char		*str;
+	char			buf[BUFFER_SIZE + 1];
+	int				ret;
+	int				i;
 
-	buf = malloc(BUFFER_SIZE + 1);
-	return (NULL);
+	i = 0;
+	while ((ret = read(fd, buf, BUFFER_SIZE)))
+	{
+		if (buf[i] != '\n' && i < ft_strlen(buf))
+		{
+			printf("%s", buf - i++);
+		}
+	}
+	return (str);
 }
 
 int	main(int argc, char *argv[])
 {
+	int		i;
 	int		fd;
 	char	*path;
+	char	*result;
 
-	if (argc < 2)
-	{
-		ft_putendl_fd("Pleaser enter the file descriptor path after the program name.", 2);
-		return (1);
-	}
+	i = 0;
+	if (argc != 2)
+		printf("Please enter the file descriptor path after the program name.\n");
 	else
 		path = argv[argc - 1];
 	if ((fd = open(path, O_RDONLY)) == -1)
+		printf("Cannot open the file.\n");
+	result = get_next_line(fd);
+	while (result != NULL)
 	{
-		ft_putendl_fd("Cannot open the file.", 2);
-		return (1);
+		printf("%3i:%s", i, result);
+		i++;
+		result = get_next_line(fd);
 	}
-	get_next_line(fd);
 	if (close(fd) == -1)
-	{
-		ft_putendl_fd("Error, cannot close the file.", 2);
-		return (1);
-	}
+		printf("Error, cannot close the file.\n");
 	return (0);
 }

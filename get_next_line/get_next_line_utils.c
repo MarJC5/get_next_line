@@ -6,36 +6,11 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/25 16:23:06 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/26 18:02:28 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*
-* Writes functions
-* ft_putchar_fd / ft_putstr_fd / ft_putendl_fd / ft_putnbr_fd
-*/
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
-
-void	ft_putstr_fd(char *str, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-		ft_putchar_fd(str[i++], fd);
-}
-
-void	ft_putendl_fd(char *str, int fd)
-{
-	ft_putstr_fd(str, fd);
-	write(fd, "\n", 1);
-}
 
 /*
 * Others functions
@@ -49,6 +24,25 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+char	*ft_substr(const char *str, unsigned int start, size_t len)
+{
+	size_t	i;
+	char	*s;
+
+	i = -1;
+	if (!str)
+		return (NULL);
+	if (len > ft_strlen(str))
+		len = ft_strlen(str);
+	s = malloc((len + 1) * sizeof(char));
+	if (!s)
+		return (NULL);
+	while (++i < len && start < ft_strlen(str))
+		s[i] = str[start++];
+	s[i] = '\0';
+	return (s);
 }
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)

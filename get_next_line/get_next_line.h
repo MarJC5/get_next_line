@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:08 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/25 16:23:22 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 07:29:26 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
-
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
-void	ft_putendl_fd(char *str, int fd);
+char	*ft_substr(const char *str, unsigned int start, size_t len);
 
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 
