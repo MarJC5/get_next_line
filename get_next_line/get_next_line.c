@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/27 17:37:14 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/27 17:41:42 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ char	*ft_read_line(int fd, char *save, char *buf)
 
 	c = 0;
 	nl = NULL;
-	if (!save)
-		save = ft_strdup("");
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
 		if (file == -1)
 			return (NULL);
 		buf[file] = '\0';
-		result = ft_strjoin(save, buf);
+		if (save)
+			result = ft_strjoin(save, buf);
+		else
+			result = ft_substr(buf, 0, file);
 		printf("\n===== SAVE INSIDE =====\n%s\n", save);
 		printf("\n===== STRJOIN =====\n%s\n", result);
 		free(save);
@@ -68,7 +69,7 @@ int	main(int argc, char *argv[])
 	char	*path;
 	char	*result;
 
-	i = 2;
+	i = 1;
 	if (argc != 2)
 		printf("Please enter the file descriptor path after the program name.\n");
 	else
