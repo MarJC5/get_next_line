@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/27 22:27:40 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/28 17:37:51 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ char	*ft_strchr(const char *str, int c)
 		i++;
 	}
 	return (NULL);
+}
+
+int	ft_strchr_pos(const char *str, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ft_strlen(str) + 1)
+	{
+		if (str[i] == (char)c)
+			return (i);
+		i++;
+	}
+	return (i);
 }
 
 char	*ft_substr(const char *str, unsigned int start, size_t len)
