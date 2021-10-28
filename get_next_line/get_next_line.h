@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:08 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/28 17:37:23 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/29 00:03:48 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE	42
+#  define BUFFER_SIZE	50
 # endif
 
 # include <sys/types.h>

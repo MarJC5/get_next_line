@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/28 17:41:55 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/29 00:04:05 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 static char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
+	char 	*nl;
 	int		file;
-	int		i;
 
-	i = 0;
-	printf("\n\n===== SAVE UP =====\n%s\n\n", *save);
-	while (!ft_strchr(*save, '\n'))
+	nl = NULL;
+	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
-		if (file == -1)
+		if (file <= 0)
+		{
+			printf("\n\033[1;31mEND FILE\033[0;37m\n\n");
 			return (NULL);
+		}
 		buf[file] = '\0';
 		result = ft_strjoin(*save, buf);
 		free(*save);
 		*save = ft_substr(result, 0, ft_strlen(result));
-		printf("\n\n===== SAVE IN =====\n%s\n\n", *save);
-		printf("\n\n===== SAVE NL =====\n%d\n\n", ft_strchr_pos(*save, '\n'));
+		nl = ft_strchr(*save, '\n');
 	}
 	return (result);
 }
@@ -39,21 +40,17 @@ static char	*ft_line(int fd, char **save, char *buf)
 	char	*result;
 	char	*temp;
 	int		c;
-	int		i;
 
 	c = 0;
-	i = 0;
-	ft_read_check(fd, save, buf, result);
-	result = buf;
+
+	result = ft_read_check(fd, save, buf, result);
 	while (result[c] != '\n')
 		c++;
 	result[c] = '\0';
+	free(temp);
 	temp = ft_substr(*save, c + 1, BUFFER_SIZE - c);
-	printf("\n\n===== TEMP =====\n%s\n\n", temp);
 	free(*save);
 	*save = ft_substr(temp, 0, ft_strlen(temp));
-	printf("\n\n===== SAVE OUT =====\n%s\n\n", *save);
-	printf("\n\n===== RESULT =====\n");
 	return (result);
 }
 
@@ -83,7 +80,7 @@ int	main(int argc, char *argv[])
 	char	*path;
 	char	*result;
 
-	i = 2;
+	i = 0;
 	if (argc != 2)
 		printf("Please enter the file descriptor path after the program name.\n");
 	else
@@ -91,12 +88,23 @@ int	main(int argc, char *argv[])
 	if ((fd = open(path, O_RDONLY)) == -1)
 		printf("Cannot open the file.\n");
 	result = get_next_line(fd);
-	while (i--)
+	while (i++ < 10)
 	{
-		printf("%s", result);
+		printf("\n\033[1;32mRESULT -> \033[0;37m\033[1;37mline N°%d\033[0;37m\n", i);
+		printf("%s\n", result);
 		result = get_next_line(fd);
 	}
 	if (close(fd) == -1)
 		printf("Error, cannot close the file.\n");
 	return (0);
+
+	//printf("\n\n\033[1;37mTEMP ->\033[0;37m\n%s", temp);
+
+	//printf("\n\n\033[1;33mSAVE NL POSITION ->\033[0;37m\n%d", ft_strchr_pos(*save, '\n'));
+
+	//printf("\n\n\033[1;34mSAVE BEFORE LOOP ->\033[0;37m\n%s", *save);
+	//printf("\n\n\033[1;36mSAVE IN LOOP ->\033[0;37m\n%s", *save);
+
+	//printf("\n\n\033[1;31mBUF IN LOOP ->\033[0;37m\n%s", buf);
+	//printf("\n\n\033[1;33mBUF AFTER LOOP ->\033[0;37m\n%s", result);
 }
