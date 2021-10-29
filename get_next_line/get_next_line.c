@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/29 10:05:36 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/29 12:27:34 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,33 @@
 char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
 	char	*nl;
+	char	*temp;
 	int		file;
 
-	file = 0;
 	nl = NULL;
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
-		if (file < 0)
-		{
-			printf("\n\033[1;31mEND FILE\033[0;37m\n\n");
+		if (file == -1)
 			return (NULL);
+		if (file != BUFFER_SIZE && file)
+		{
+			temp = ft_substr(buf, 0, file);
+			result = ft_strjoin(*save, temp);
+			printf("\n\n\033[1;33mREAD IN LOOP ->\033[0;37m\n%d", file);
+			printf("\n\n\033[1;35mEND SAVE WITH REST\033[0;37m\n%s", result);
+		}
+		if (file == 0)
+		{
+			printf("\n\n\033[1;33mREAD IN LOOP ->\033[0;37m\n%d", file);
+			printf("\n\n\033[1;35mEND SAVE\033[0;37m\n%s", buf);
+			break ;
 		}
 		buf[file] = '\0';
 		result = ft_strjoin(*save, buf);
 		free(*save);
 		*save = ft_substr(result, 0, ft_strlen(result));
+		printf("\n\n\033[1;36mSAVE IN LOOP ->\033[0;37m\n%s", *save);
 		nl = ft_strchr(*save, '\n');
 	}
 	return (result);
