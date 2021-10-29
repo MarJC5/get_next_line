@@ -6,13 +6,13 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/29 00:12:43 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/29 10:05:36 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	ft_strchr_pos(const char *str, int c)
+/* static int	ft_strchr_pos(const char *str, int c)
 {
 	size_t	i;
 
@@ -24,18 +24,19 @@ static int	ft_strchr_pos(const char *str, int c)
 		i++;
 	}
 	return (i);
-}
+} */
 
-static char	*ft_read_check(int fd, char **save, char *buf, char *result)
+char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
 	char	*nl;
 	int		file;
 
+	file = 0;
 	nl = NULL;
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
-		if (file <= 0)
+		if (file < 0)
 		{
 			printf("\n\033[1;31mEND FILE\033[0;37m\n\n");
 			return (NULL);
@@ -49,13 +50,15 @@ static char	*ft_read_check(int fd, char **save, char *buf, char *result)
 	return (result);
 }
 
-static char	*ft_line(int fd, char **save, char *buf)
+char	*ft_line(int fd, char **save, char *buf)
 {
 	char	*result;
 	char	*temp;
 	int		c;
 
 	c = 0;
+	result = NULL;
+	temp = NULL;
 	result = ft_read_check(fd, save, buf, result);
 	while (result[c] != '\n')
 		c++;
@@ -73,6 +76,7 @@ char	*get_next_line(int fd)
 	char			*buf;
 	char			*ret;
 
+	buf = NULL;
 	if (fd > 0 && BUFFER_SIZE > 0)
 		buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
