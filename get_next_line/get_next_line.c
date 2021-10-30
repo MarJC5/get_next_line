@@ -6,13 +6,13 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/29 10:05:36 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 14:26:29 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/* static int	ft_strchr_pos(const char *str, int c)
+static int	ft_strchr_pos(const char *str, int c)
 {
 	size_t	i;
 
@@ -20,11 +20,37 @@
 	while (i < ft_strlen(str) + 1)
 	{
 		if (str[i] == (char)c)
-			return (i);
+			return (1);
 		i++;
 	}
-	return (i);
-} */
+	return (0);
+}
+
+static char	*ft_nl_end(char *result, char **save)
+{
+	char	*temp;
+	int		c;
+	int		i;
+
+	c = 0;
+	temp = NULL;
+	if (ft_strchr_pos(result, '\n'))
+	{
+		while (result[c] != '\n')
+			c++;
+		result[c + 1] = '\0';
+		temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
+	}
+	if (result[ft_strlen(result)] == '\0')
+	{
+		i = 0;
+		while (result[c++] != '\0')
+			i++;
+		temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
+	}
+	*save = ft_substr(temp, 0, ft_strlen(temp));
+	return (*save);
+}
 
 char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
@@ -36,12 +62,15 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
-		if (file < 0)
+		if (file <= 0)
 		{
-			printf("\n\033[1;31mEND FILE\033[0;37m\n\n");
-			return (NULL);
+			result = ft_substr(*save, 0, ft_strlen(*save));
+			break ;
 		}
+		if (file == -1)
+			return (NULL);
 		buf[file] = '\0';
+		free(result);
 		result = ft_strjoin(*save, buf);
 		free(*save);
 		*save = ft_substr(result, 0, ft_strlen(result));
@@ -54,19 +83,9 @@ char	*ft_line(int fd, char **save, char *buf)
 {
 	char	*result;
 	char	*temp;
-	int		c;
 
-	c = 0;
-	result = NULL;
-	temp = NULL;
 	result = ft_read_check(fd, save, buf, result);
-	while (result[c] != '\n')
-		c++;
-	result[c] = '\0';
-	free(temp);
-	temp = ft_substr(*save, c + 1, BUFFER_SIZE - c);
-	free(*save);
-	*save = ft_substr(temp, 0, ft_strlen(temp));
+	ft_nl_end(result, save);
 	return (result);
 }
 
