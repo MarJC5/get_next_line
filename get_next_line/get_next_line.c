@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/30 15:12:43 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 17:47:44 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,16 @@ static char	*ft_nl_end(char *result, char **save)
 
 	c = 0;
 	temp = NULL;
-	if (ft_strchr_pos(result, '\n'))
-	{
-		while (result[c] != '\n')
+	while (result[c] != '\n')
 			c++;
-		result[c + 1] = '\0';
-		temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
-		free(temp);
-	}
-	if (result[ft_strlen(result)] == '\0')
-	{
-		i = 0;
-		while (result[c++] != '\0')
-			i++;
-		temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
-		free(temp);
-	}
+	result[c + 1] = '\0';
+	temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
+	free(temp);
+	i = 0;
+	while (result[c++] != '\0')
+		i++;
+	temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
+	free(temp);
 	*save = ft_substr(temp, 0, ft_strlen(temp));
 	return (*save);
 }
@@ -52,10 +46,9 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 		if (file <= 0)
 		{
 			result = ft_substr(*save, 0, ft_strlen(*save));
+			free(*save);
 			break ;
 		}
-		if (file == -1)
-			return (NULL);
 		buf[file] = '\0';
 		free(result);
 		result = ft_strjoin(*save, buf);
@@ -82,14 +75,12 @@ char	*get_next_line(int fd)
 	char			*buf;
 	char			*ret;
 
-	buf = NULL;
-	if (fd > 0 && BUFFER_SIZE > 0)
-		buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!save)
 		save = malloc(1);
-	if (!save)
+	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buf || !save)
 		return (NULL);
 	ret = ft_line(fd, &save, buf);
 	free(buf);
