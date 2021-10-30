@@ -25,6 +25,8 @@ int	main(int argc, char *argv[])
 		printf("Error, cannot close the file.\n");
 	return (0);
 
+	//printf("\n\n\033[1;33mREAD IN LOOP ->\033[0;37m\n%d", file);
+
 	//printf("\n\n\033[1;37mTEMP ->\033[0;37m\n%s", temp);
 
 	//printf("\n\n\033[1;33mSAVE NL POSITION ->\033[0;37m\n%d", ft_strchr_pos(*save, '\n'));

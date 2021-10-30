@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/30 14:26:29 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 14:32:17 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ static char	*ft_nl_end(char *result, char **save)
 char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
 	char	*nl;
+	char	*temp;
 	int		file;
 
-	file = 0;
 	nl = NULL;
 	while (!nl)
 	{
@@ -74,6 +74,7 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 		result = ft_strjoin(*save, buf);
 		free(*save);
 		*save = ft_substr(result, 0, ft_strlen(result));
+		printf("\n\n\033[1;36mSAVE IN LOOP ->\033[0;37m\n%s", *save);
 		nl = ft_strchr(*save, '\n');
 	}
 	return (result);
