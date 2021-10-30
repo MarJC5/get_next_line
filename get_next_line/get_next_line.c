@@ -6,25 +6,11 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/30 14:32:17 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 15:12:43 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static int	ft_strchr_pos(const char *str, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < ft_strlen(str) + 1)
-	{
-		if (str[i] == (char)c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 static char	*ft_nl_end(char *result, char **save)
 {
@@ -40,6 +26,7 @@ static char	*ft_nl_end(char *result, char **save)
 			c++;
 		result[c + 1] = '\0';
 		temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
+		free(temp);
 	}
 	if (result[ft_strlen(result)] == '\0')
 	{
@@ -47,6 +34,7 @@ static char	*ft_nl_end(char *result, char **save)
 		while (result[c++] != '\0')
 			i++;
 		temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
+		free(temp);
 	}
 	*save = ft_substr(temp, 0, ft_strlen(temp));
 	return (*save);
@@ -55,7 +43,6 @@ static char	*ft_nl_end(char *result, char **save)
 char	*ft_read_check(int fd, char **save, char *buf, char *result)
 {
 	char	*nl;
-	char	*temp;
 	int		file;
 
 	nl = NULL;
@@ -74,7 +61,6 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 		result = ft_strjoin(*save, buf);
 		free(*save);
 		*save = ft_substr(result, 0, ft_strlen(result));
-		printf("\n\n\033[1;36mSAVE IN LOOP ->\033[0;37m\n%s", *save);
 		nl = ft_strchr(*save, '\n');
 	}
 	return (result);
@@ -83,8 +69,8 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 char	*ft_line(int fd, char **save, char *buf)
 {
 	char	*result;
-	char	*temp;
 
+	result = NULL;
 	result = ft_read_check(fd, save, buf, result);
 	ft_nl_end(result, save);
 	return (result);

@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/29 00:10:16 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 15:12:09 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+int	ft_strchr_pos(const char *str, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < ft_strlen(str) + 1)
+	{
+		if (str[i] == (char)c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 char	*ft_strchr(const char *str, int c)
@@ -55,42 +69,31 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 	return (s);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	char		*sdst;
-	const char	*ssrc;
-	size_t		i;
-
-	i = -1;
-	sdst = (char *)dst;
-	ssrc = (const char *)src;
-	if (!sdst && !ssrc)
-		return (NULL);
-	while (++i < n)
-		sdst[i] = ssrc[i];
-	return (dst);
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		prefix;
-	int		suffix;
-	int		full;
+	int		i;
+	int		len1;
+	int		len2;
 	char	*str;
 
-	if (!s1 || !s2)
-		return (NULL);
-	prefix = ft_strlen(s1);
-	suffix = ft_strlen(s2);
-	full = prefix + suffix;
-	str = malloc((prefix + suffix + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
 	if (s1 && s2)
 	{
-		ft_memcpy(str, s1, prefix);
-		ft_memcpy(str + prefix, s2, suffix);
+		len1 = ft_strlen(s1);
+		len2 = ft_strlen(s2);
+		str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+		if (str == NULL)
+			return (NULL);
+		i = -1;
+		while (s1[++i])
+			str[i] = s1[i];
+		i = -1;
+		while (s2[++i])
+		{
+			str[len1] = s2[i];
+			len1++;
+		}
+		str[len1] = '\0';
+		return (str);
 	}
-	str[full] = '\0';
-	return ((char *)str);
+	return (NULL);
 }

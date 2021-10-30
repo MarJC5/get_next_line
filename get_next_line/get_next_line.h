@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:08 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/30 14:31:44 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/10/30 14:58:46 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE	2
+#  define BUFFER_SIZE	42
 # endif
 
 # include <sys/types.h>
@@ -31,7 +31,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(const char *str, unsigned int start, size_t len);
 char	*ft_strchr(const char *str, int c);
 
-void	*ft_memcpy(void *dst, const void *src, size_t n);
+int     ft_strchr_pos(const char *str, int c);
 
 size_t	ft_strlen(const char *str);
 
