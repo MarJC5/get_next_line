@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/10/30 17:47:44 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/02 18:40:10 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,15 @@ static char	*ft_nl_end(char *result, char **save)
 	c = 0;
 	temp = NULL;
 	while (result[c] != '\n')
-			c++;
+		c++;
 	result[c + 1] = '\0';
 	temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
-	free(temp);
 	i = 0;
 	while (result[c++] != '\0')
 		i++;
 	temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
-	free(temp);
 	*save = ft_substr(temp, 0, ft_strlen(temp));
+	free(temp);
 	return (*save);
 }
 
@@ -39,14 +38,13 @@ char	*ft_read_check(int fd, char **save, char *buf, char *result)
 	char	*nl;
 	int		file;
 
-	nl = NULL;
+	nl = ft_strchr(*save, '\n');
 	while (!nl)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
 		if (file <= 0)
 		{
-			result = ft_substr(*save, 0, ft_strlen(*save));
-			free(*save);
+			ft_nl_end(result, save);
 			break ;
 		}
 		buf[file] = '\0';
@@ -75,13 +73,14 @@ char	*get_next_line(int fd)
 	char			*buf;
 	char			*ret;
 
+	buf = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buf)
 		return (NULL);
 	if (!save)
 		save = malloc(1);
-	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf || !save)
-		return (NULL);
 	ret = ft_line(fd, &save, buf);
 	free(buf);
 	return (ret);
