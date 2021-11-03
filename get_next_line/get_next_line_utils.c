@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:26:20 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/03 11:05:42 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/03 15:57:24 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(const char *str)
 
 char	*ft_strdup(const char *str)
 {
-	char	*copy;
+	char		*copy;
 	size_t		i;
 
 	copy = malloc((ft_strlen(str) + 1) * sizeof(char));
@@ -47,21 +47,7 @@ int	ft_strchr_pos(const char *str, int c)
 			return (i);
 		i++;
 	}
-	return (0);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < ft_strlen(str) + 1)
-	{
-		if (str[i] == (char)c)
-			return ((char *)str + i);
-		i++;
-	}
-	return (NULL);
+	return (-1);
 }
 
 char	*ft_substr(const char *str, unsigned int start, size_t len)
