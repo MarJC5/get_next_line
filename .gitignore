@@ -3,6 +3,7 @@
 .vscode
 get_next_line/gnlTester/
 test/
+tmp/
 
 # Prerequisites
 *.d

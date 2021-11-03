@@ -6,65 +6,56 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/02 18:40:10 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/03 11:53:03 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_nl_end(char *result, char **save)
+static char	*ft_return_line(char **save)
 {
-	char	*temp;
-	int		c;
-	int		i;
+	char	*tmp;
+	int		nl;
+	int		endl;
 
-	c = 0;
-	temp = NULL;
-	while (result[c] != '\n')
-		c++;
-	result[c + 1] = '\0';
-	temp = ft_substr(*save, c - 1, BUFFER_SIZE - c);
-	i = 0;
-	while (result[c++] != '\0')
-		i++;
-	temp = ft_substr(*save, c - 1, c - (BUFFER_SIZE + i));
-	*save = ft_substr(temp, 0, ft_strlen(temp));
-	free(temp);
-	return (*save);
-}
-
-char	*ft_read_check(int fd, char **save, char *buf, char *result)
-{
-	char	*nl;
-	int		file;
-
-	nl = ft_strchr(*save, '\n');
-	while (!nl)
+	tmp = NULL;
+	nl = ft_strchr_pos(*save, '\n');
+	endl = ft_strchr_pos(*save, '\0');
+	if (nl)
 	{
-		file = read(fd, buf, BUFFER_SIZE);
-		if (file <= 0)
-		{
-			ft_nl_end(result, save);
-			break ;
-		}
-		buf[file] = '\0';
-		free(result);
-		result = ft_strjoin(*save, buf);
-		free(*save);
-		*save = ft_substr(result, 0, ft_strlen(result));
-		nl = ft_strchr(*save, '\n');
+		tmp = ft_substr(*save, 0, ft_strchr_pos(*save, '\n') + 1);
+		*save = ft_substr(*save, ft_strlen(tmp), ft_strlen(*save) + 1);
 	}
-	return (result);
+	else if (endl)
+	{
+		tmp = ft_substr(*save, 0, ft_strchr_pos(*save, '\0'));
+		*save = ft_substr(*save, ft_strlen(tmp), ft_strlen(*save));
+	}
+	return (tmp);
 }
 
-char	*ft_line(int fd, char **save, char *buf)
+static char	*ft_read_file(int fd, char **save, char *buf)
 {
+	int		file;
 	char	*result;
 
-	result = NULL;
-	result = ft_read_check(fd, save, buf, result);
-	ft_nl_end(result, save);
-	return (result);
+	file = 1;
+	while (file != 0)
+	{
+		file = read(fd, buf, BUFFER_SIZE);
+		if (file < 0)
+			return (NULL);
+		if (file != 0)
+		{
+			buf[file] = '\0';
+			result = ft_strjoin(*save, buf);
+			free(*save);
+			*save = ft_strdup(result);
+			free(result);
+			result = NULL;
+		}
+	}
+	return (ft_return_line(save));
 }
 
 char	*get_next_line(int fd)
@@ -74,14 +65,26 @@ char	*get_next_line(int fd)
 	char			*ret;
 
 	buf = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE <= 0)
 		return (NULL);
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
 		return (NULL);
 	if (!save)
-		save = malloc(1);
-	ret = ft_line(fd, &save, buf);
+		save = ft_strdup("");
+	if (!save)
+		return (NULL);
+	ret = ft_read_file(fd, &save, buf);
 	free(buf);
+	buf = NULL;
 	return (ret);
 }
+
+/*
+* 1. Check fd & BUFFER_SIZE is valid ?
+* 2. Init static and buf malloc
+* 3. Save file regarding BUFFER_SIZE and check if \n is in it
+* 4. If no \n is founded, join static with new buf value
+* 5. Redo until \n is founded
+* 6. If \n is found return the line and then free the static > go back to 3.
+*/
