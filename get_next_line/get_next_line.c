@@ -6,12 +6,11 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/04 13:57:55 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/04 16:03:08 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 static char	*ft_return_line(char **save)
 {
 	char	*tmp;
@@ -43,7 +42,7 @@ static char	*ft_read_file(int fd, char **save, char *buf)
 	char	*result;
 
 	nl = ft_strchr_pos(*save, '\n');
-	while (nl < 0)
+	while (nl <= 0)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
 		if (file == 0)

@@ -15,7 +15,7 @@ int	main(int argc, char *argv[])
 	if ((fd = open(path, O_RDONLY)) == -1)
 		printf("Cannot open the file.\n");
 	result = get_next_line(fd);
-	while (i++ < 2)
+	while (i++ < 5)
 	{
 		//printf("\033[1;32mRESULT -> \033[0;37m\033[1;37mline N°%d\033[0;37m\n", i);
 		printf("%s", result);
