@@ -1,7 +1,7 @@
 # Others
 .DS_Store
 .vscode
-get_next_line/gnlTester/
+gnlTester/
 test/
 tmp/
 

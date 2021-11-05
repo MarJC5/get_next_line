@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/05 14:15:13 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/05 17:12:03 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,16 @@ static char	*ft_read_file(int fd, char **save, char *buf)
 	while (nl <= 0)
 	{
 		file = read(fd, buf, BUFFER_SIZE);
-		if (file != 0)
-		{
-			buf[file] = '\0';
-			result = ft_strjoin(*save, buf);
-			free(*save);
-			*save = ft_strdup(result);
-			free(result);
-			result = NULL;
-		}
-		if (file == 0)
-			break ;
 		if (file < 0)
 			return (NULL);
+		if (file == 0)
+			break ;
+		buf[file] = '\0';
+		result = ft_strjoin(*save, buf);
+		free(*save);
+		*save = ft_strdup(result);
+		free(result);
+		result = NULL;
 		nl = ft_strchr_pos(*save, '\n');
 	}
 	return (ft_return_line(save, nl, ft_strchr_pos(*save, '\0')));
