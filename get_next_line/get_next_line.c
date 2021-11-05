@@ -6,38 +6,41 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/04 16:03:08 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/05 13:12:35 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-static char	*ft_return_line(char **save)
+
+static char	*ft_return_line(char **save, int nl, int endl)
 {
 	char	*tmp;
-	int		nl;
-	int		endl;
+	char	*res;
 
 	tmp = NULL;
-	nl = ft_strchr_pos(*save, '\n');
-	endl = ft_strchr_pos(*save, '\0');
+	res = NULL;
 	if (nl >= 0)
 	{
-		tmp = ft_substr(*save, 0, ft_strchr_pos(*save, '\n') + 1);
+		res = ft_substr(*save, 0, nl + 1);
+		tmp = ft_substr(*save, ft_strlen(res), endl);
 		free(*save);
-		*save = ft_substr(*save, ft_strlen(tmp), ft_strlen(*save));
+		*save = ft_strdup(tmp);
 	}
 	else if (endl)
 	{
-		tmp = ft_substr(*save, 0, ft_strchr_pos(*save, '\0'));
+		res = ft_substr(*save, 0, endl);
 		free(*save);
-		*save = ft_substr(*save, ft_strlen(tmp), ft_strlen(*save));
+		*save = NULL;
 	}
-	return (tmp);
+	free(tmp);
+	tmp = NULL;
+	return (res);
 }
 
 static char	*ft_read_file(int fd, char **save, char *buf)
 {
 	int		nl;
+	int		endl;
 	int		file;
 	char	*result;
 
@@ -60,7 +63,8 @@ static char	*ft_read_file(int fd, char **save, char *buf)
 		}
 		nl = ft_strchr_pos(*save, '\n');
 	}
-	return (ft_return_line(save));
+	endl = ft_strchr_pos(*save, '\0');
+	return (ft_return_line(save, nl, endl));
 }
 
 char	*get_next_line(int fd)
