@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/05 17:12:03 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/09 00:54:24 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,25 @@ static char	*ft_return_line(char **save, int nl, int endl)
 
 static char	*ft_read_file(int fd, char **save, char *buf)
 {
-	int		nl;
 	int		file;
-	char	*result;
+	int		endl;
+	int		nl;
+	char	*tmp;
 
-	nl = ft_strchr_pos(*save, '\n');
-	while (nl <= 0)
+	file = read(fd, buf, BUFFER_SIZE);
+	while (file > 0)
 	{
-		file = read(fd, buf, BUFFER_SIZE);
-		if (file < 0)
-			return (NULL);
-		if (file == 0)
+		buf[file] = 0;
+		tmp = *save;
+		*save = ft_strjoin(*save, buf);
+		free(tmp);
+		if (ft_strchr_pos(buf, '\n') >= 0)
 			break ;
-		buf[file] = '\0';
-		result = ft_strjoin(*save, buf);
-		free(*save);
-		*save = ft_strdup(result);
-		free(result);
-		result = NULL;
-		nl = ft_strchr_pos(*save, '\n');
+		file = read(fd, buf, BUFFER_SIZE);
 	}
-	return (ft_return_line(save, nl, ft_strchr_pos(*save, '\0')));
+	nl = ft_strchr_pos(*save, '\n');
+	endl = ft_strchr_pos(*save, '\0');
+	return (ft_return_line(save, nl, endl));
 }
 
 char	*get_next_line(int fd)
