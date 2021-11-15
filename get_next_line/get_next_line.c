@@ -6,7 +6,7 @@
 /*   By: jmartin <jmartin@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 11:25:47 by jmartin           #+#    #+#             */
-/*   Updated: 2021/11/15 01:46:59 by jmartin          ###   ########.fr       */
+/*   Updated: 2021/11/15 01:52:25 by jmartin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,12 @@ char	*get_next_line(int fd)
 	char			*buf;
 	char			*ret;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	buf = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buf, 0) < 0)
 		return (NULL);
 	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
 		return (NULL);
-	if (read(fd, buf, 0) < 0)
-	{
-		free_ptr(&buf);
-		return (NULL);
-	}
 	if (!save)
 		save = ft_strdup("");
 	ret = ft_read_file(fd, &save, buf);
