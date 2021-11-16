@@ -14,8 +14,8 @@ available on the file descriptor one line at a time until the end of it.
 The file must be read line by line until he founds a new line (ASCII = '\n') and not more. Read all the file in one time isn't recommended this is why we use a global ``BUFFER_SIZE`` to set how many octet the function will read.
 
 ## Functions needed
-- malloc(), free()
-- read() (open() and close() are used only in the main)
+- [malloc()](https://man7.org/linux/man-pages/man3/malloc.3.html), [free()](https://man7.org/linux/man-pages/man1/free.1.html)
+- [read()](https://man7.org/linux/man-pages/man2/read.2.html) ([open()](https://man7.org/linux/man-pages/man2/open.2.html) and [close()](https://man7.org/linux/man-pages/man2/close.2.html) are used only in the main)
 - [ft_strchr()](https://github.com/MarJC5/Libft/blob/main/libft/ft_strchr.c), [ft_strlen()](https://github.com/MarJC5/Libft/blob/main/libft/ft_strlen.c), [ft_strdup()](https://github.com/MarJC5/Libft/blob/main/libft/ft_strdup.c), [ft_substr()](https://github.com/MarJC5/Libft/blob/main/libft/ft_substr.c), [ft_strjoin()](https://github.com/MarJC5/Libft/blob/main/libft/ft_strjoin.c)
 
 ## Set-by-step
