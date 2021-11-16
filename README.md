@@ -38,7 +38,7 @@ We secure the ``malloc()`` by checking if ``buf`` isn't NULL and we create an em
 As everything is now setup we can proceed to the next step of the program and call the function ``char *ft_read_file(int fd, char **save, char *buf)``.
 
 ### 4. Read the file
-2 variables is needed:
+2 variables are required:
 - ``int file``: To store the return value of ``read()``
 - ``char *tmp``: To save data and swap it later
 
@@ -56,4 +56,4 @@ As we have now found the newline we need to loop the static ``*save`` to see wha
 - Substract the line from the start to the '\n' include
 - If no '\n' is found, we check with ``ft_strchr()`` if a '\0' is founded
     - ``\n found``: We save in ``tmp`` the value static ``*save`` whitout the line that we will return. It means now ``tmp`` is equal ``*save`` minus all we got until '\n'. (ex: Hello \n world -> world) Then we can ``free()`` the static to asign the new value en return the line.
-    - ``\0 found``: If the satatic ``**save`` is == '\0' we return NULL as their is no line at all in the static. don't forger to free the static as we set it to a size of ``malloc(1)`` a the beggining of the program. (to avoid leaks). Otherwise the line as some date included '\0', we simply return the value of the static.
+    - ``\0 found``: If the static ``**save`` is == '\0' we return NULL as their is no line at all in the static. don't forger to free the static as we set it to a size of ``malloc(1)`` a the beggining of the program. (to avoid leaks). Otherwise the line as some date included '\0', we simply return the value of the static.
